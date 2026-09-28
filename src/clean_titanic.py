@@ -79,7 +79,7 @@ def clean_titanic(df: pd.DataFrame) -> pd.DataFrame:
     # Collapse rare titles into a small set of buckets.
     rare_titles = {
         "Mlle": "Miss", "Ms": "Miss", "Mme": "Mrs",
-        "Lady": "Rare", "Countess": "Rare", "Capt": "Rare", "Col": "Rare",
+        "Lady": "Rare", "Countess": "Rare", "the Countess": "Rare", "Capt": "Rare", "Col": "Rare",
         "Don": "Rare", "Dr": "Rare", "Major": "Rare", "Rev": "Rare",
         "Sir": "Rare", "Jonkheer": "Rare", "Dona": "Rare",
     }

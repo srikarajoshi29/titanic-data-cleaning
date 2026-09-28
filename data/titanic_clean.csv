@@ -758,14 +758,14 @@ PassengerId,Survived,Pclass,Title,Sex,Age,AgeWasMissing,SibSp,Parch,FamilySize,I
 757,0,3,Mr,male,28.0,False,0,0,1,True,7.7958,Unknown,S
 758,0,2,Mr,male,18.0,False,0,0,1,True,11.5,Unknown,S
 759,0,3,Mr,male,34.0,False,0,0,1,True,8.05,Unknown,S
-760,1,1,the Countess,female,33.0,False,0,0,1,True,86.5,B,S
+760,1,1,Rare,female,33.0,False,0,0,1,True,86.5,B,S
 761,0,3,Mr,male,26.0,True,0,0,1,True,14.5,Unknown,S
 762,0,3,Mr,male,41.0,False,0,0,1,True,7.125,Unknown,S
 763,1,3,Mr,male,20.0,False,0,0,1,True,7.2292,Unknown,C
 764,1,1,Mrs,female,36.0,False,1,2,4,False,120.0,B,S
 765,0,3,Mr,male,16.0,False,0,0,1,True,7.775,Unknown,S
 766,1,1,Mrs,female,51.0,False,1,0,2,False,77.9583,D,S
-767,0,1,Rare,male,49.0,True,0,0,1,True,39.6,Unknown,C
+767,0,1,Rare,male,48.5,True,0,0,1,True,39.6,Unknown,C
 768,0,3,Miss,female,30.5,False,0,0,1,True,7.75,Unknown,Q
 769,0,3,Mr,male,26.0,True,1,0,2,False,24.15,Unknown,Q
 770,0,3,Mr,male,32.0,False,0,0,1,True,8.3625,Unknown,S

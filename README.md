@@ -1,8 +1,9 @@
-# Titanic Dataset — Data Cleaning
+# Titanic Dataset — Data Cleaning & EDA
 
-A small, self-contained project that takes the public **Titanic passenger
-manifest** dataset, cleans missing values, fixes column types, and documents
-every cleaning decision made along the way.
+A two-part project on the public **Titanic passenger manifest** dataset:
+
+- **Task 1 — Data cleaning:** clean missing values, fix column types, document every assumption (`notebooks/titanic_cleaning.ipynb`).
+- **Task 2 — Exploratory Data Analysis:** statistics, visualizations and modelling/decision insights on the cleaned data (`notebooks/02_titanic_eda.ipynb`).
 
 ## Dataset
 
@@ -28,7 +29,9 @@ project is fully reproducible without needing internet access.
 │   ├── titanic_raw.csv        # original, unmodified dataset
 │   └── titanic_clean.csv      # output of the cleaning process
 ├── notebooks/
-│   └── titanic_cleaning.ipynb # exploratory + cleaning walkthrough, with outputs
+│   ├── titanic_cleaning.ipynb # Task 1: cleaning walkthrough, with outputs
+│   └── 02_titanic_eda.ipynb   # Task 2: EDA, statistics, visualizations, insights
+├── reports/figures/           # 8 PNG charts exported from the EDA notebook
 ├── src/
 │   └── clean_titanic.py       # reusable cleaning function + CLI script
 ├── README.md
@@ -43,8 +46,9 @@ pip install -r requirements.txt
 # Option A: run the script directly
 python src/clean_titanic.py --input data/titanic_raw.csv --output data/titanic_clean.csv
 
-# Option B: open the notebook
+# Option B: open the notebooks (run Task 1 first, EDA reads its output)
 jupyter notebook notebooks/titanic_cleaning.ipynb
+jupyter notebook notebooks/02_titanic_eda.ipynb
 ```
 
 ## Missing values found (raw data)
@@ -107,3 +111,30 @@ Every decision below is also inline-commented in `src/clean_titanic.py`.
 
 See `requirements.txt`. Core dependency is `pandas`; `jupyter`/`nbconvert`
 are only needed to run/re-execute the notebook.
+
+---
+
+## Task 2 — EDA summary
+
+**Approach:** summary statistics and skewness checks; target balance; distributions (with a log transform for `Fare`); survival rates by category with confidence intervals; a Sex x Class heatmap; correlation matrix; chi-square (with Cramér's V) and Mann-Whitney U tests; and a data-quality check of Task 1's Age imputation.
+
+**Headline numbers:** overall survival 38.4%; women 74.2% vs men 18.9%; 1st/2nd/3rd class 63% / 47% / 24%.
+
+### Key insights (details and charts in the notebook)
+
+| # | Insight | Recommended modelling / decision action |
+|---|---|---|
+| 1 | Sex (and Title) are the strongest predictors (Cramér's V ≈ 0.54 / 0.57) | Core features; never drop |
+| 2 | Class effect interacts with sex: 1st-class women 97% vs 3rd-class men 14% | Interaction term or tree-based model |
+| 3 | `Fare` is heavily right-skewed (skew ≈ 4.8) and correlated with class (-0.55) | `log1p(Fare)`, watch multicollinearity |
+| 4 | Family size is non-linear: alone 30%, 2-4 people 55-72%, 5+ collapses | Bin into alone / small / large; do not use linearly |
+| 5 | Title carries more signal than raw Age (Age vs. survival r = -0.06, not significant) | Use Title and age bands |
+| 6 | Known cabin/deck is largely a proxy for 1st class (81% of 1st class vs 2% of 3rd) | Keep the "Unknown" category; interpret with care |
+| 7 | Cherbourg's higher survival (55%) is probably confounded by class (51% 1st class) | Validate against class before using |
+| 8 | Missing-age rows survive less (29% vs 41%) and have lower variance after imputation | Keep the `AgeWasMissing` flag |
+
+### Note: fix made to Task 1
+While preparing the EDA, the title `the Countess` was found to be missing from the rare-title grouping in `src/clean_titanic.py`. It is now mapped to `Rare` and `data/titanic_clean.csv` was regenerated (`Title` now has 5 clean categories).
+
+### Limitations
+Observational, historical data (891 of ~2,200 people aboard): patterns are correlations within this sample, not causal claims. Some groups (decks A/F/G, family size 7+) are small, so their rates are noisy.
